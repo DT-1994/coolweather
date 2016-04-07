@@ -21,9 +21,9 @@ public class CoolWeatherDB {
     private CoolWeatherDB(Context context)
     {
         CoolWeatherOpenHelper dbHelper=new CoolWeatherOpenHelper(context,DB_NAME,null,VERDION);
-        dbHelper.getWritableDatabase();
+        db=dbHelper.getWritableDatabase();
     }
-    public synchronized static CoolWeatherDB getInttance(Context context)
+    public synchronized static CoolWeatherDB getInstance(Context context)
     {
         if(coolWeatherDB==null)
             coolWeatherDB=new CoolWeatherDB(context);
@@ -51,7 +51,7 @@ public class CoolWeatherDB {
                 province.setProvinceCode(cursor.getString(cursor.getColumnIndex("province_code")));
                 list.add(province);
             }
-            while (cursor.moveToFirst());
+            while (cursor.moveToNext());
         }
         return list;
     }
@@ -109,5 +109,5 @@ public class CoolWeatherDB {
         }
 return list;
     }
-    
+
 }
