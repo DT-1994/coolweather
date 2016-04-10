@@ -3,6 +3,7 @@ package com.coolweather.app.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -35,7 +36,11 @@ public class WeatherActivity extends AppCompatActivity implements Button.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActionBar actionBar=getSupportActionBar();
+        actionBar.hide();
+
         setContentView(R.layout.weather_layout);
+
         weatherInfoLayout = (LinearLayout) findViewById(R.id.weather_info_layout);
         cityNameText = (TextView) findViewById(R.id.city_name);
         publishText = (TextView) findViewById(R.id.publish_text);
@@ -50,11 +55,11 @@ public class WeatherActivity extends AppCompatActivity implements Button.OnClick
             publishText.setText("同步中......");
             weatherInfoLayout.setVisibility(View.VISIBLE);
             cityNameText.setVisibility(View.INVISIBLE);
-            queryweatherCode(countyName);
+            queryCountyName(countyName);
         }
         else
         {
-            showWeather(countyName);
+            showWeather();
         }
         switchCity.setOnClickListener(this);
         refreshWeather.setOnClickListener(this);
@@ -62,7 +67,7 @@ public class WeatherActivity extends AppCompatActivity implements Button.OnClick
     }
     @Override
     public void onClick(View v)
-    {/*
+    {
         switch(v.getId())
         {
             case R.id.switch_city:
@@ -74,17 +79,17 @@ public class WeatherActivity extends AppCompatActivity implements Button.OnClick
             case R.id.refresh_weather:
                 publishText.setText("同步中....");
                 SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
-                String weatherCode=prefs.getString("weather_code","");
-                if(!TextUtils.isEmpty(weatherCode))
+                String countyName=prefs.getString("city_name","");
+                if(!TextUtils.isEmpty(countyName))
                 {
-                    queryWeatherInfo(weatherCode);
+                    queryCountyName(countyName);
                 }
                 break;
             default:break;
         }
-        */
+
     }
-    private void queryweatherCode(String  countyName)
+    private void queryCountyName(String  countyName)
     {String address="";
         try {
          address = "http://api.map.baidu.com/telematics/v3/weather?location=" + URLEncoder.encode(countyName, "utf-8") + "&output=json&ak=GArYjKexiZ3mDDpmvDjyb4Sf";
@@ -93,10 +98,10 @@ public class WeatherActivity extends AppCompatActivity implements Button.OnClick
     {
         e.printStackTrace();
     }
-        queryFromServer(address,countyName);
+        queryFromServer(address);
     }
-   
-    private void queryFromServer(final String address,final String  name)
+
+    private void queryFromServer(final String address)
     {
         HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
             @Override
@@ -105,7 +110,7 @@ public class WeatherActivity extends AppCompatActivity implements Button.OnClick
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            showWeather(name);
+                            showWeather();
                         }
                     });
 
@@ -124,7 +129,7 @@ public class WeatherActivity extends AppCompatActivity implements Button.OnClick
             }
         });
     }
-    private void showWeather(String name)
+    private void showWeather()
     {
         SharedPreferences prefs=PreferenceManager.getDefaultSharedPreferences(this);
         cityNameText.setText(prefs.getString("city_name", ""));

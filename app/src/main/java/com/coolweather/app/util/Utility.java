@@ -105,33 +105,7 @@ public class Utility {
         }
 
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-     /*
-        try{
-
-            JSONObject jsonObject=new JSONObject(response);
-            JSONObject weatherInfo=jsonObject.getJSONObject("results");
-            String cityName=weatherInfo.getString("currentCity");
-            String weatherCode=weatherInfo.getString("cityid");
-            String temp1=weatherInfo.getString("temp1");
-            String temp2=weatherInfo.getString("temp2");
-            String weatherDesp=weatherInfo.getString("weather");
-            String publishTime=weatherInfo.getString("ptime");
-            saveWeatherInfo(context, cityName, weatherCode, temp1, temp2, weatherDesp, publishTime); }
-        catch (JSONException e) { e.printStackTrace(); }*/
-        public static void saveWeatherInfo(Context context,String cityName, String temp, String weatherDesp, String publishTime,int pm)
+    public static void saveWeatherInfo(Context context,String cityName, String temp, String weatherDesp, String publishTime,int pm)
         {
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy年M月d日", Locale.CHINA);
             SharedPreferences.Editor editor= PreferenceManager.getDefaultSharedPreferences(context).edit();

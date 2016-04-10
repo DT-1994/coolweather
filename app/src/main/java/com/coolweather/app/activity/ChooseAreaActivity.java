@@ -46,18 +46,20 @@ public static final int LEVEL_PROVINCE=0;
     private Province selectedProvince;
     private City selectedCity;
     private int currentLevel;
+    private boolean isFromWeatherActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
-        if(prefs.getBoolean("city_selected",false))
+        isFromWeatherActivity= getIntent().getBooleanExtra("from_weather_activity",false);
+        if(prefs.getBoolean("city_selected",false)&&!isFromWeatherActivity)
         {
             Intent intent=new Intent(this,WeatherActivity.class);
             startActivity(intent);
             finish();
             return;
         }
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+
 
         setContentView(R.layout.choose_area);
         listView = (ListView) findViewById(R.id.list_view);
@@ -79,9 +81,9 @@ public static final int LEVEL_PROVINCE=0;
                 else if(currentLevel==LEVEL_COUNTY)
                 {
 
-                    String countyName=countyList.get(position).getCountyName();/////////////////////////
+                    String countyName=countyList.get(position).getCountyName();
                     Intent intent=new Intent(ChooseAreaActivity.this,WeatherActivity.class);
-                    intent.putExtra("county_name",countyName);/////////////////////////////
+                    intent.putExtra("county_name",countyName);
 
                     startActivity(intent);
                     finish();
@@ -217,17 +219,21 @@ private void queryProvinces()
             progressDialog.dismiss();
     }
     @Override
-    public void onBackPressed()
-    {
-        if(currentLevel==LEVEL_COUNTY)
+    public void onBackPressed() {
+        if (currentLevel == LEVEL_COUNTY)
             querycities();
-        else if(currentLevel==LEVEL_CITY)
+        else if (currentLevel == LEVEL_CITY)
             queryProvinces();
-        else finish();
+        else if (isFromWeatherActivity) {
+            Intent intent = new Intent(this, WeatherActivity.class);
+            startActivity(intent);
 
 
+            finish();
+
+
+        }
     }
-
 
     }
 
