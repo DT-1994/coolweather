@@ -8,10 +8,10 @@ import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+
 import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
+
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;

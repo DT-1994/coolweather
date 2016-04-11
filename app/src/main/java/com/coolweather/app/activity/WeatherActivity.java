@@ -15,6 +15,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.coolweather.app.R;
+import com.coolweather.app.receiver.AutoUpdateReceiver;
+import com.coolweather.app.service.AutoUpdateService;
 import com.coolweather.app.util.HttpCallbackListener;
 import com.coolweather.app.util.HttpUtil;
 import com.coolweather.app.util.Utility;
@@ -136,8 +138,10 @@ public class WeatherActivity extends AppCompatActivity implements Button.OnClick
         tempText.setText(prefs.getString("temp", ""));
         weatherDespText.setText(prefs.getString("weather_desp", ""));
         publishText.setText(prefs.getString("publish_time", ""));
-        currentDateText.setText("pm2.5: "+prefs.getInt("pm",0));
+        currentDateText.setText("pm2.5: " + prefs.getInt("pm", 0));
         weatherInfoLayout.setVisibility(View.VISIBLE);
         cityNameText.setVisibility(View.VISIBLE);
+        Intent intent=new Intent(this, AutoUpdateService.class);
+        startService(intent);
     }
 }
