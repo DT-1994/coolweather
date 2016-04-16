@@ -1,5 +1,6 @@
 package com.coolweather.app.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -47,8 +48,12 @@ public static final int LEVEL_PROVINCE=0;
     private City selectedCity;
     private int currentLevel;
     private boolean isFromWeatherActivity;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
         isFromWeatherActivity= getIntent().getBooleanExtra("from_weather_activity",false);
@@ -62,8 +67,10 @@ public static final int LEVEL_PROVINCE=0;
 
 
         setContentView(R.layout.choose_area);
+
         listView = (ListView) findViewById(R.id.list_view);
         titleText = (TextView) findViewById(R.id.title_text);
+
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, dataList);
         listView.setAdapter(adapter);
         coolWeatherDB = CoolWeatherDB.getInstance(this);
@@ -224,9 +231,10 @@ private void queryProvinces()
             querycities();
         else if (currentLevel == LEVEL_CITY)
             queryProvinces();
-        else if (isFromWeatherActivity) {
+        else {if (isFromWeatherActivity) {
             Intent intent = new Intent(this, WeatherActivity.class);
             startActivity(intent);
+        }
 
 
             finish();
